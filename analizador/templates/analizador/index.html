@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Analizador de representación de datos</title>
+    <!-- Bootstrap CSS para un diseño limpio y profesional -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Analizador de Representación de Datos</h1>
+        <p class="text-center text-muted">Python 3.12 & Django — Arquitectura de Computadoras</p>
+
+        <div class="row">
+            <!-- Formulario 1: Conversión Numérica -->
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">1. Conversión de Sistemas Numéricos</h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                            {% csrf_token %}
+                            {{ form_conv.as_p }}
+                            <button type="submit" name="btn_convertir" class="btn btn-primary w-100">Convertir y Analizar</button>
+                            <a href="." class="btn btn-secondary w-100 mt-2">Limpiar Pantalla</a>
+                        </form>
+
+                        {% if error_conversion %}
+                            <div class="alert alert-danger mt-3" role="alert">
+                                <strong>Error:</strong> {{ error_conversion }}
+                            </div>
+                        {% endif %}
+
+                        {% if resultado_conversion %}
+                            <div class="card mt-3 bg-white border-success">
+                                <div class="card-body">
+                                    <h6 class="card-title text-success">Resultados de la Conversión:</h6>
+                                    <ul class="list-unstyled mb-0">
+                                        <li><strong>Decimal:</strong> {{ resultado_conversion.decimal }}</li>
+                                        <li><strong>Binario:</strong> {{ resultado_conversion.binario }}</li>
+                                        <li><strong>Octal:</strong> {{ resultado_conversion.octal }}</li>
+                                        <li><strong>Hexadecimal:</strong> {{ resultado_conversion.hexadecimal }}</li>
+                                        <hr>
+                                        <li><strong>Bits Significativos:</strong> {{ resultado_conversion.bits_significativos }}</li>
+                                        <li><strong>Bytes Necesarios:</strong> {{ resultado_conversion.bytes_necesarios }} byte(s) ({{ resultado_conversion.total_bits }} bits)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulario 2: Análisis de Texto y UTF-8 -->
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">2. Análisis de Caracteres y UTF-8</h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                            {% csrf_token %}
+                            {{ form_txt.as_p }}
+                            <button type="submit" name="btn_analizar" class="btn btn-success w-100">Analizar Texto</button>
+                        </form>
+
+                        {% if error_texto %}
+                            <div class="alert alert-danger mt-3" role="alert">
+                                <strong>Error:</strong> {{ error_texto }}
+                            </div>
+                        {% endif %}
+
+                        {% if resultado_texto %}
+                            <div class="card mt-3 bg-white border-success">
+                                <div class="card-body">
+                                    <h6 class="card-title text-success">Detalle por Carácter (UTF-8):</h6>
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-bordered mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Carácter</th>
+                                                    <th>Decimal</th>
+                                                    <th>Unicode</th>
+                                                    <th>Hex</th>
+                                                    <th>Bytes UTF-8</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for item in resultado_texto %}
+                                                <tr>
+                                                    <td><code>{{ item.caracter }}</code></td>
+                                                    <td>{{ item.decimal }}</td>
+                                                    <td>{{ item.punto_codigo }}</td>
+                                                    <td>{{ item.hexadecimal }}</td>
+                                                    <td><code>{{ item.bytes_utf8 }}</code></td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
